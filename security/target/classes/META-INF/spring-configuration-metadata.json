@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "secure.ignored",
+      "type": "com.future.security.config.IgnoreUrlsConfig",
+      "sourceType": "com.future.security.config.IgnoreUrlsConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "secure.ignored.urls",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.future.security.config.IgnoreUrlsConfig"
+    }
+  ],
+  "hints": []
+}
