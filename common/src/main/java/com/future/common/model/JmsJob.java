@@ -56,9 +56,6 @@ public class JmsJob implements Serializable {
     @ApiModelProperty(value = "职位详情")
     private String detail;
 
-    @ApiModelProperty(value = "筛选条件属性")
-    private String filter;
-
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -197,14 +194,6 @@ public class JmsJob implements Serializable {
         this.detail = detail;
     }
 
-    public String getFilter() {
-        return filter;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -228,7 +217,6 @@ public class JmsJob implements Serializable {
         sb.append(", del=").append(del);
         sb.append(", workDate=").append(workDate);
         sb.append(", detail=").append(detail);
-        sb.append(", filter=").append(filter);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

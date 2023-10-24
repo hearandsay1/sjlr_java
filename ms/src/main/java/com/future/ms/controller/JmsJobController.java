@@ -4,6 +4,7 @@ import com.future.common.api.CommonPage;
 import com.future.common.api.CommonResult;
 import com.future.common.model.JmsJob;
 import com.future.common.model.UmsMenu;
+import com.future.ms.dto.JmsJobParam;
 import com.future.ms.service.JmsJobService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +37,8 @@ public class JmsJobController {
     @ApiOperation("添加工作信息")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult create(@RequestBody JmsJob jmsJob) {
-        int count = jobService.create(jmsJob);
+    public CommonResult create(@RequestBody JmsJobParam jmsJobParam) {
+        int count = jobService.create(jmsJobParam);
         if (count > 0) {
             return CommonResult.success(count);
         } else {

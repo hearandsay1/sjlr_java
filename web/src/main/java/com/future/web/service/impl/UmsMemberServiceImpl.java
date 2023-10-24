@@ -12,6 +12,7 @@ import com.future.web.service.UmsMemberCacheService;
 import com.future.web.service.UmsMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -59,7 +60,9 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         List<UmsMember> memberList = memberMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(memberList)) {
             member = memberList.get(0);
-            memberCacheService.setMember(member);
+            UmsMember cacheMember = new UmsMember();
+            BeanUtils.copyProperties(member,cacheMember);
+            memberCacheService.setMember(cacheMember);
             return member;
         }
         return null;
@@ -73,13 +76,13 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Override
     public void register(String username, String password, String telephone, String authCode) {
         //验证验证码
-        if(!verifyAuthCode(authCode,telephone)){
-            Asserts.fail("验证码错误");
-        }
+//        if(!verifyAuthCode(authCode,telephone)){
+//            Asserts.fail("验证码错误");
+//        }
         //查询是否已有该用户
         UmsMemberExample example = new UmsMemberExample();
         example.createCriteria().andUsernameEqualTo(username);
-        example.or(example.createCriteria().andPhoneEqualTo(telephone));
+//        example.or(example.createCriteria().andPhoneEqualTo(telephone));
         List<UmsMember> umsMembers = memberMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(umsMembers)) {
             Asserts.fail("该用户已经存在");
@@ -91,7 +94,6 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         umsMember.setPassword(passwordEncoder.encode(password));
         umsMember.setCreateTime(new Date());
         umsMember.setStatus(1);
-
         memberMapper.insert(umsMember);
         umsMember.setPassword(null);
     }

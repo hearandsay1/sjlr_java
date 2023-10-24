@@ -3,10 +3,8 @@ package com.future.ms.controller;
 import com.future.common.api.CommonPage;
 import com.future.common.api.CommonResult;
 import com.future.common.model.JmsFilter;
-import com.future.common.model.JmsJob;
-import com.future.common.model.UmsAdmin;
 import com.future.ms.dto.JmsFilterParam;
-import com.future.ms.dto.UmsAdminParam;
+import com.future.ms.dto.JmsJobFilterVo;
 import com.future.ms.service.JmsFilterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,10 +28,10 @@ public class JmsFilterController {
     @ApiOperation("根据名称分页获取筛选条件列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<JmsFilter>> list(@RequestParam(value = "keyword", required = false) String keyword,
+    public CommonResult<CommonPage<JmsJobFilterVo>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                     @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<JmsFilter> filterList = filterService.list(keyword, pageSize, pageNum);
+        List<JmsJobFilterVo> filterList = filterService.list(keyword, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(filterList));
     }
 

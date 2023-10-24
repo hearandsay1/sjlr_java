@@ -1,23 +1,26 @@
 package com.future.web.controller;
 
 
+import com.future.common.api.CommonPage;
 import com.future.common.api.CommonResult;
+import com.future.common.model.JmsRecord;
 import com.future.common.model.UmsMember;
+import com.future.web.service.JmsJobService;
+import com.future.web.service.JmsRecordService;
 import com.future.web.service.UmsMemberService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,13 +39,19 @@ public class UmsMemberController {
     @Autowired
     private UmsMemberService memberService;
 
+    @Autowired
+    private JmsRecordService recordService;
+
+    @Autowired
+    private JmsJobService jobService;
+
     @ApiOperation("会员注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult register(@RequestParam String username,
                                  @RequestParam String password,
-                                 @RequestParam String telephone,
-                                 @RequestParam String authCode) {
+                                 @RequestParam(required = false) String telephone,
+                                 @RequestParam(required = false) String authCode) {
         memberService.register(username, password, telephone, authCode);
         return CommonResult.success(null,"注册成功");
     }
@@ -107,4 +116,62 @@ public class UmsMemberController {
         tokenMap.put("tokenHead", tokenHead);
         return CommonResult.success(tokenMap);
     }
+
+    @ApiOperation(value = "获取报名记录列表")
+    @RequestMapping(value = "/record/list/{status}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<JmsRecord>> recordList(Principal principal, @PathVariable(required = false) Integer status,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                          @RequestParam(value = "pageNum", defaultValue = "1")Integer pageNum){
+        if(principal==null){
+            return CommonResult.unauthorized(null);
+        }
+        List<JmsRecord> records = recordService.recordList(status,pageNum,pageSize);
+        return CommonResult.success(CommonPage.restPage(records),"成功获取报名记录列表");
+    }
+
+    @ApiOperation(value = "报名")
+    @RequestMapping(value = "/job/signup/{jid}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult signup(Principal principal, @PathVariable Long jid){
+        if(principal==null){
+            return CommonResult.unauthorized(null);
+        }
+        int count = recordService.signup(jid);
+        if(count>0){
+            return CommonResult.success("报名成功");
+        }else{
+            return CommonResult.failed("报名失败");
+        }
+
+    }
+
+    @ApiOperation(value = "点赞")
+    @RequestMapping(value = "/job/like/{jid}", method = RequestMethod.POST)
+    @ResponseBody
+    public  CommonResult like(@PathVariable Long jid){
+        int count = jobService.like(jid);
+        if(count>0){
+            return CommonResult.success("点赞成功");
+        }else{
+            return CommonResult.failed("点赞失败");
+        }
+    }
+
+    @ApiOperation(value = "收藏或取消收藏")
+    @RequestMapping(value = "/job/collect/{jid}", method = RequestMethod.POST)
+    @ResponseBody
+    public  CommonResult collect(Principal principal, @PathVariable Long jid){
+        if(principal==null){
+            return CommonResult.unauthorized(null);
+        }
+        int count = jobService.collect(jid);
+        if(count>0){
+            return CommonResult.success("收藏或取消收藏成功");
+        }else{
+            return CommonResult.failed("收藏或取消收藏失败");
+        }
+    }
+
+
 }

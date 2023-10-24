@@ -1,6 +1,7 @@
 package com.future.ms.service;
 
 import com.future.common.model.JmsJob;
+import com.future.ms.dto.JmsJobParam;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface JmsJobService {
      * 添加工作信息
      */
     @Transactional
-    int create(JmsJob jmsJob);
+    int create(JmsJobParam jmsJobParam);
 
     /**
      * 根据id获取工作信息

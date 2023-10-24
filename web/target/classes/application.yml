@@ -34,10 +34,12 @@ secure:
       - /member/login
       - /member/register
       - /member/getAuthCode
+      - /job/list
+      - /job/filters/list
 
 # 自定义redis key
 redis:
-  database: sjlr
+  database: sjlr_web
   key:
     authCode: 'ums:authCode'
     member: 'ums:member'

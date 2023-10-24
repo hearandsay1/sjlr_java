@@ -8,12 +8,14 @@ import com.future.common.model.JmsFilterExample;
 import com.future.common.model.JmsFilterItem;
 import com.future.common.model.JmsFilterItemExample;
 import com.future.ms.dto.JmsFilterParam;
+import com.future.ms.dto.JmsJobFilterVo;
 import com.future.ms.service.JmsFilterService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,14 +29,26 @@ public class JmsFilterServiceImpl implements JmsFilterService {
     private JmsFilterItemMapper filterItemMapper;
 
     @Override
-    public List<JmsFilter> list(String keyword, Integer pageSize, Integer pageNum) {
+    public List<JmsJobFilterVo> list(String keyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         JmsFilterExample example = new JmsFilterExample();
         JmsFilterExample.Criteria criteria = example.createCriteria();
         if (!StrUtil.isEmpty(keyword)) {
             criteria.andNameLike("%" + keyword + "%");
         }
-        return filterMapper.selectByExample(example);
+        List<JmsFilter> filterList = filterMapper.selectByExample(example);
+        List<JmsJobFilterVo> filterVos = new ArrayList<>(filterList.size());
+        for(JmsFilter filter: filterList){
+            JmsJobFilterVo filterVo = new JmsJobFilterVo();
+            BeanUtils.copyProperties(filter,filterVo);
+            JmsFilterItemExample example1 = new JmsFilterItemExample();
+            JmsFilterItemExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andFidEqualTo(filter.getId());
+            List<JmsFilterItem> filterItems = filterItemMapper.selectByExample(example1);
+            filterVo.setValues(filterItems);
+            filterVos.add(filterVo);
+        }
+        return filterVos;
     }
 
     @Override

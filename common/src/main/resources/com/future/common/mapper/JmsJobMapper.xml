@@ -19,7 +19,6 @@
     <result column="del" jdbcType="INTEGER" property="del" />
     <result column="work_date" jdbcType="VARCHAR" property="workDate" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
-    <result column="filter" jdbcType="VARCHAR" property="filter" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -81,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, title, tag, company, area, addr, create_time, pub_time, status, like_num, comment_num, 
-    collect_num, salary, salary_unit, del, work_date, detail, filter
+    collect_num, salary, salary_unit, del, work_date, detail
   </sql>
   <select id="selectByExample" parameterType="com.future.common.model.JmsJobExample" resultMap="BaseResultMap">
     select
@@ -122,13 +121,13 @@
       pub_time, status, like_num, 
       comment_num, collect_num, salary, 
       salary_unit, del, work_date, 
-      detail, filter)
+      detail)
     values (#{title,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
       #{area,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{pubTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{likeNum,jdbcType=INTEGER}, 
       #{commentNum,jdbcType=INTEGER}, #{collectNum,jdbcType=INTEGER}, #{salary,jdbcType=DECIMAL}, 
       #{salaryUnit,jdbcType=INTEGER}, #{del,jdbcType=INTEGER}, #{workDate,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{filter,jdbcType=VARCHAR})
+      #{detail,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.future.common.model.JmsJob">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -184,9 +183,6 @@
       <if test="detail != null">
         detail,
       </if>
-      <if test="filter != null">
-        filter,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="title != null">
@@ -236,9 +232,6 @@
       </if>
       <if test="detail != null">
         #{detail,jdbcType=VARCHAR},
-      </if>
-      <if test="filter != null">
-        #{filter,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -302,9 +295,6 @@
       <if test="row.detail != null">
         detail = #{row.detail,jdbcType=VARCHAR},
       </if>
-      <if test="row.filter != null">
-        filter = #{row.filter,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -328,8 +318,7 @@
       salary_unit = #{row.salaryUnit,jdbcType=INTEGER},
       del = #{row.del,jdbcType=INTEGER},
       work_date = #{row.workDate,jdbcType=VARCHAR},
-      detail = #{row.detail,jdbcType=VARCHAR},
-      filter = #{row.filter,jdbcType=VARCHAR}
+      detail = #{row.detail,jdbcType=VARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -385,9 +374,6 @@
       <if test="detail != null">
         detail = #{detail,jdbcType=VARCHAR},
       </if>
-      <if test="filter != null">
-        filter = #{filter,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -408,8 +394,7 @@
       salary_unit = #{salaryUnit,jdbcType=INTEGER},
       del = #{del,jdbcType=INTEGER},
       work_date = #{workDate,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR},
-      filter = #{filter,jdbcType=VARCHAR}
+      detail = #{detail,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

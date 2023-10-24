@@ -13,7 +13,7 @@ public class JmsFilter implements Serializable {
     private Integer type;
 
     @ApiModelProperty(value = "启用状态：0->禁用；1->启用")
-    private Integer status;
+    private Boolean status;
 
     private static final long serialVersionUID = 1L;
 
@@ -41,11 +41,11 @@ public class JmsFilter implements Serializable {
         this.type = type;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

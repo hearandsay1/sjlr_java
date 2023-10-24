@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.common.mapper.JmsCommentMapper">
+  <resultMap id="BaseResultMap" type="com.future.common.model.JmsComment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="mid" jdbcType="BIGINT" property="mid" />
+    <result column="jid" jdbcType="BIGINT" property="jid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="menber_avatar" jdbcType="VARCHAR" property="menberAvatar" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, pid, content, mid, jid, create_time, status, menber_avatar, member_name
+  </sql>
+  <select id="selectByExample" parameterType="com.future.common.model.JmsCommentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jms_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from jms_comment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from jms_comment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.future.common.model.JmsCommentExample">
+    delete from jms_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.future.common.model.JmsComment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jms_comment (pid, content, mid, 
+      jid, create_time, status, 
+      menber_avatar, member_name)
+    values (#{pid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{mid,jdbcType=BIGINT}, 
+      #{jid,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, 
+      #{menberAvatar,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.future.common.model.JmsComment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jms_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="mid != null">
+        mid,
+      </if>
+      <if test="jid != null">
+        jid,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="menberAvatar != null">
+        menber_avatar,
+      </if>
+      <if test="memberName != null">
+        member_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=BIGINT},
+      </if>
+      <if test="jid != null">
+        #{jid,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="menberAvatar != null">
+        #{menberAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.future.common.model.JmsCommentExample" resultType="java.lang.Long">
+    select count(*) from jms_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update jms_comment
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.pid != null">
+        pid = #{row.pid,jdbcType=BIGINT},
+      </if>
+      <if test="row.content != null">
+        content = #{row.content,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mid != null">
+        mid = #{row.mid,jdbcType=BIGINT},
+      </if>
+      <if test="row.jid != null">
+        jid = #{row.jid,jdbcType=BIGINT},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.status != null">
+        status = #{row.status,jdbcType=BIT},
+      </if>
+      <if test="row.menberAvatar != null">
+        menber_avatar = #{row.menberAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="row.memberName != null">
+        member_name = #{row.memberName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update jms_comment
+    set id = #{row.id,jdbcType=BIGINT},
+      pid = #{row.pid,jdbcType=BIGINT},
+      content = #{row.content,jdbcType=VARCHAR},
+      mid = #{row.mid,jdbcType=BIGINT},
+      jid = #{row.jid,jdbcType=BIGINT},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      status = #{row.status,jdbcType=BIT},
+      menber_avatar = #{row.menberAvatar,jdbcType=VARCHAR},
+      member_name = #{row.memberName,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.future.common.model.JmsComment">
+    update jms_comment
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="mid != null">
+        mid = #{mid,jdbcType=BIGINT},
+      </if>
+      <if test="jid != null">
+        jid = #{jid,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="menberAvatar != null">
+        menber_avatar = #{menberAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.future.common.model.JmsComment">
+    update jms_comment
+    set pid = #{pid,jdbcType=BIGINT},
+      content = #{content,jdbcType=VARCHAR},
+      mid = #{mid,jdbcType=BIGINT},
+      jid = #{jid,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=BIT},
+      menber_avatar = #{menberAvatar,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

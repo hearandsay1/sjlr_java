@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -104,7 +104,7 @@
     </selectKey>
     insert into jms_filter (name, type, status
       )
-    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{status,jdbcType=BIT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.future.common.model.JmsFilter">
@@ -131,7 +131,7 @@
         #{type,jdbcType=INTEGER},
       </if>
       <if test="status != null">
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -154,7 +154,7 @@
         type = #{row.type,jdbcType=INTEGER},
       </if>
       <if test="row.status != null">
-        status = #{row.status,jdbcType=INTEGER},
+        status = #{row.status,jdbcType=BIT},
       </if>
     </set>
     <if test="example != null">
@@ -166,7 +166,7 @@
     set id = #{row.id,jdbcType=BIGINT},
       name = #{row.name,jdbcType=VARCHAR},
       type = #{row.type,jdbcType=INTEGER},
-      status = #{row.status,jdbcType=INTEGER}
+      status = #{row.status,jdbcType=BIT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -181,7 +181,7 @@
         type = #{type,jdbcType=INTEGER},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+        status = #{status,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -190,7 +190,7 @@
     update jms_filter
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
